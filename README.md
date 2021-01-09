@@ -6,3 +6,9 @@ Contents of the repository:
 - `gpr_toy`: notebook to generate figures 2 and 3
 - `qm9`: notebook to generate figure 23
 - `soap_lengths`: python script to determine the length of SOAP vectors
+- `water`: notebook to generate the hands-on examples in section III
+
+Contributing:
+
+Please use the `nbstripout` extension to avoid committing notebook noise to the repository
+
