@@ -481,28 +481,24 @@ GAP[2000] = [0           -166120412.486688 -166120412.486688 0
 using Plots
 using LaTeXStrings
 pyplot()
-plot(xlabel="Reaction coordinate", ylabel=(L"\Delta H(\tau) / eV"))
-mykeys = sort!(collect(keys(GAP)))
-x = [GAP[k][1:20,1] for k in mykeys]
-y = [GAP[k][1:20,2] .- GAP[k][1,2] for k in mykeys]
-l = permutedims(hcat(["$(k/1000) GPa" for k in mykeys]))
+plot(xlabel="Reaction coordinate", ylabel=L"\Delta H(\tau) / eV")
 
-# x = zeros(20,1)
-# y = zeros(20,1)
-# l = []
-# for k in sort!(collect(keys(GAP)))
-#     #println(k)
-#     #_ , m = findmax(GAP[k][:,2])
-#     x = hcat(x, GAP[k][1:20,1])
-#     y = hcat(y, GAP[k][1:20,2] .- GAP[k][1,2])
-#     push!(l, "$(k/1000) GPa")
-#     #push!(pp, plot(GAP[k][:,1], GAP[k][:,2] .- GAP[k][1,2],
-#     #label="$(k/1000) GPa"))
-# end
+# mykeys = sort!(collect(keys(GAP)))
+# x = [GAP[k][1:20,1] for k in mykeys]
+# y = [GAP[k][1:20,2] .- GAP[k][1,2] for k in mykeys]
+# l = hcat(["$(k/1000) GPa" for k in mykeys]...)
+# plot!(x, y, label = l)
+c = cgrad(:viridis, [0.001,0.002,0.003,0.004,range(0.005,1.0,length=14)...], rev=true, categorical=true)
 
-p = plot!(x, y, label = l, palette = palette(:viridis, 14),
-        markerstrokewidth=0.5, markershape=:circle,
-        xrange=[0,0.5], yrange = [0, 1.0], legend=:topleft,
+plot!(palette = palette(:viridis, 14, rev=true),
+        #palette(c,14),
+        xrange=[-0.02,0.52], yrange = [-0.05, 1.1], legend=:topleft,
         framestyle=:box)
-display(p)
+
+for k in sort!(collect(keys(GAP)))
+    plot!(GAP[k][:,1], GAP[k][:,2] .- GAP[k][1,2], label="$(k/1000) GPa",
+    markershape=:circle, markerstrokealpha=0, markersize=6)
+end
+display(plot!())
+
 savefig("iron.pdf")
